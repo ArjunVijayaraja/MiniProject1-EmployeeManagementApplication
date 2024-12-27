@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link th:href="@{/bootstrap/bootstrap-5.3.3-dist/css/bootstrap.min.css}" rel="stylesheet">
+    <style>
+        .container-fluid {
+            padding: 25px;
+            /* border: 10px solid red; */
+            min-height: 100dvh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            /* Keep the header at the top */
+            z-index: 1;
+            /* Ensure the header stays above the table body */
+            background-color: #f8f9fa;
+            /* Solid background color for the header */
+            box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.4);
+            /* Optional: add shadow for better visibility */
+        }
+
+        .errTxt {
+            font-size: 0.8rem;
+            margin: 0px;
+            margin-top: 2px;
+        }
+
+        .toast {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid d-flex align-items-center bg-dark-subtle p-3 ">
+        <div class="card col-12 col-lg-12 col-md-12 col-sm-12  flex-grow-1 shadow-lg mb-1">
+            <div class="card-header">
+                <h4 class="text-center">Employee Management System</h4>
+            </div>
+            <form th:action="@{/index}" method="POST" role="form" th:object="${employee_model}">
+                <div class="card-body">
+                    <div class="row mb-1">
+                        <div class="mb-1 col-lg-3 col-md-3">
+                            <label for="EmpName" class="form-label fw-bold">Employee Name</label>
+                            <input th:field="*{employeeName}" class="form-control" type="text" id="EmpName"
+                                placeholder="Employee Name..." aria-label="default input example">
+                            <p th:errors="*{employeeName}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employeeName')}"></p>
+                        </div>
+                        <div class="mb-1 col-lg-3  col-md-3">
+                            <label for="empId" class="form-label fw-bold">Employee ID</label>
+                            <input th:field="*{employeeId}" class="form-control" type="text" id="empId"
+                                placeholder="Employee ID..." aria-label="default input example" disabled>
+                        </div>
+                        <div class="mb-1 col-lg-3  col-md-3">
+                            <label for="empMail" class="form-label fw-bold">Employee Email</label>
+                            <input th:field="*{employeeMail}" class="form-control" type="email" id="empMail"
+                                placeholder="Employee Mail..." aria-label="default input example">
+                            <p th:errors="*{employeeMail}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employeeMail')}"></p>
+
+                            <!-- Display custom error message -->
+                            <p class="text-danger errTxt" th:if="${error != null}">
+                                <i th:text="${error}"></i>
+                            </p>
+                        </div>
+                        <div class="mb-1 col-lg-2  col-md-3">
+                            <label for="empDOB" class="form-label fw-bold">Employee DOB</label>
+                            <input th:field="*{employeeDOB}" class="form-control" type="date" id="empDOB"
+                                placeholder="Employee DOB..." aria-readonly="true">
+                            <p th:errors="*{employeeDOB}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employeeDOB')}"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div
+                            class="mb-1 col-lg-3  col-md-3 justify-content-start align-items-center align-content-center d-flex">
+                            <label class="form-label fw-bold pe-4">Employee Gender : </label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input th:field="*{employeeGender}" class="form-check-input" type="radio"
+                                        name="empGender" id="empGenderM" value="Male">
+                                    <label class="form-check-label" for="empGenderM">M</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input th:field="*{employeeGender}" class="form-check-input" type="radio"
+                                        name="empGender" id="empGenderF" value="Female">
+                                    <label class="form-check-label" for="empGenderF">F</label>
+                                </div>
+                                <p th:errors="*{employeeGender}" class="text-danger errTxt"
+                                    th:if="${#fields.hasErrors('employeeGender')}"></p>
+                            </div>
+                        </div>
+                        <div class="mb-1 col-lg-3  col-md-3">
+                            <label for="empContact" class="form-label fw-bold">Contact Number</label>
+                            <input th:field="*{employeeContact}" class="form-control" type="text" id="empContact"
+                                placeholder="Mobile Number..." aria-label="default input example">
+                            <p th:errors="*{employeeContact}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employeeContact')}"></p>
+                        </div>
+                        <div class="mb-1 col-lg-3  col-md-3">
+                            <label for="empAddress" class="form-label fw-bold">Address</label>
+                            <input th:field="*{employeeAddress}" class="form-control" type="text" id="empAddress"
+                                placeholder="Address..." aria-label="default input example">
+                            <p th:errors="*{employeeAddress}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employeeAddress')}"></p>
+                        </div>
+                        <div class="mb-1 col-lg-3  col-md-3">
+                            <label for="empType" class="form-label fw-bold">Employment type</label>
+                            <select th:field="*{employmentType}" class="form-select" id="empType"
+                                aria-label="Default select example">
+                                <option value="" selected>Open this select menu</option>
+                                <option value="Permanent">Permanent</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Contract">Contract</option>
+                            </select>
+                            <p th:errors="*{employmentType}" class="text-danger errTxt"
+                                th:if="${#fields.hasErrors('employmentType')}"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <div class="col-lg-2  col-md-2">
+                            <button type="submit" class="btn btn-success">Create</button>
+                            <button type="reset" class="btn btn-light">Clear</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                            <div class="card"></div>
+                            <div class="card-header d-flex justify-content-between">
+                            <h4 class="text-start">Employee List</h4>
+                                <div>
+                                <input type="text" id="searchEmp" role="textbox" placeholder="search.." class="my-1" style="height:30px; border-radius:6px; ">
+                                </div>
+                            </div>
+                            <div class="card-body p-0" style="max-height: 330px; overflow-y: auto;">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="empTable">
+                                        <thead class="text-center table-info" style="vertical-align: middle;">
+                                            <th style="width: 50px;">S.No</th>
+                                            <th style="width: 65px;">Employee ID</th>
+                                            <th>Employee Name</th>
+                                            <th>Employee mail</th>
+                                            <th>DOB</th>
+                                            <th>Gender</th>
+                                            <th>contact</th>
+                                            <th>Address</th>
+                                            <th style="width: 85px;">Employment Type</th>
+                                            <th style="width: 215px;">Action</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:if="${#lists.isEmpty(empss)}" class="text-center">
+                                                <td colspan="10">No Employees found...</td>
+                                            </tr>
+                                            <tr th:each="emp, empStat : ${empss}">
+                                                <td th:text="${empStat.count}"></td>
+                                                <td th:text="${emp.employeeId}"></td>
+                                                <td th:text="${emp.employeeName}"></td>
+                                                <td th:text="${emp.employeeMail}"></td>
+                                                <td th:text="${emp.employeeDOB}"></td>
+                                                <td th:text="${emp.employeeGender}"></td>
+                                                <td th:text="${emp.employeeContact}"></td>
+                                                <td th:text="${emp.employeeAddress}"></td>
+                                                <td th:text="${emp.employmentType}"></td>
+                                                <td>
+                                                    <!-- Employee View Button in Table -->
+                                                    <a th:href="@{'/getEMP/'+${emp.employeeId}}"
+                                                        class="btn btn-primary btn-sm">View</a>
+                                                    <a th:href="@{'/getUpdatePage/'+${emp.employeeId}}"
+                                                        class="btn btn-secondary btn-sm">Update</a>
+
+                                                    <!--                                                <a class="btn btn-secondary btn-sm " data-bs-toggle="modal"-->
+                                                    <!--                                                    data-bs-target="#updateModal">Update</a>-->
+                                                    <a th:href="@{'/delEmp/'+${emp.employeeId}}"
+                                                        class="btn btn-danger btn-sm">delete</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <div th:if="${param.success}" id="successToast" class="toast bg-primary text-white" role="alert"
+                                    aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-body text-center">
+                                        Employee created Successfully.
+                                    </div>
+                                </div>
+                                <div th:if="${param.updated}" id="updateToast" class="toast bg-primary text-white liveToast" role="alert"
+                                    aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-body text-center">
+                                        Employee updated Successfully.
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+
+            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="viewModalLabel">View Modal</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <!--                            &lt;!&ndash; Outside the table &ndash;&gt;-->
+                            <!--                            <div>-->
+                            <!--                                <p>Total employees: <span th:text="${empss.size()}"></span></p>-->
+                            <!--                            </div>-->
+
+                            <!--                            &lt;!&ndash; Accessing specific employee data outside the table &ndash;&gt;-->
+                            <!--                            <div>-->
+                            <!--                                <p>First Employee Name: <span th:text="${emp.employeeId}"></span></p>-->
+                            <!--                            </div>-->
+
+                            <form id="viewForm">
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="viewEmpName" class="col-form-label">Employee Name</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="text" id="viewEmpName" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empId" class="col-form-label">Employee ID</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="text" id="modal_empId" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empDOB" class="col-form-label">Employee DOB</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="date" id="modal_empDOB" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empMail" class="col-form-label">Employee Email</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="email" id="modal_empMail" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empContact" class="col-form-label">Employee Contact </label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="text" id="modal_empContact" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empAddress" class="col-form-label">Employee Address</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="text" id="modal_empAddress" class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="modal_empType" class="col-form-label">Employee ID</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input type="text" id="modal_empType" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="updateModalLabel">Update Employee</h1>
+                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="updateFrom" method="post" th:action="@{/employee/update}"
+                                th:object="${employee_model}">
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empName" class="col-form-label">Employee Name</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeName}" type="text" id="Umodal_empName"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empId" class="col-form-label">Employee ID</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeId}" type="number" id="Umodal_empId"
+                                            class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empDOB" class="col-form-label">Employee DOM</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeDOB}" type="date" id="Umodal_empDOB"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empMail" class="col-form-label">Employee Email</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeMail}" type="mail" id="Umodal_empMail"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empGender" class="col-form-label">Employee Gender</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeGender}" type="text" id="Umodal_empGender"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empContact" class="col-form-label">Employee Contact</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeContact}" type="text" id="Umodal_empContact"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empAddress" class="col-form-label">Employee Address</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employeeAddress}" type="text" id="Umodal_empAddress"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row g-3 mb-2 align-items-center">
+                                    <div class="col-lg-4">
+                                        <label for="Umodal_empType" class="col-form-label">Employee Type</label>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <input th:field="*{employmentType}" type="text" id="Umodal_empType"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="reset" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Update Employee</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+           
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successToastTrigger = document.getElementById('successToast');
+            const updateToastTrigger = document.getElementById('updateToast');
+
+            if (successToastTrigger) {
+                const toast = new bootstrap.Toast(successToastTrigger);
+                toast.show();
+            }
+
+            if (updateToastTrigger) {
+                const toast = new bootstrap.Toast(updateToastTrigger);
+                toast.show();
+            }
+
+           document.getElementById("searchEmp").addEventListener('input',function(){
+                var searchTerm = this.value.toLowerCase();
+                var rows = document.querySelectorAll('#empTable tbody tr');
+
+                rows.forEach(function(row){
+                    var rowtext = row.textContent.toLocaleLowerCase();
+
+                    if(rowtext.indexOf(searchTerm) > -1){
+                        row.style.display='';
+                    }
+                    else{
+                        row.style.display = 'none'; 
+                    }
+                })
+            })
+        });
+    </script>
+
+    <script th:src="@{/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.js}"></script>
+
+</body>
+
+</html>

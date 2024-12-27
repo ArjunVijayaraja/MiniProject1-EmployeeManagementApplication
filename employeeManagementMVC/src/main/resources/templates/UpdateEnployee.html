@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViewPage</title>
+    <link th:href="@{/bootstrap/bootstrap-5.3.3-dist/css/bootstrap.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container col-lg-6">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="text-center">Update Employee Details</h4>
+        </div>
+        <div class="card-body">
+            <form  th:method="get" id="empdetailsViewForm"  th:object="${employee_model}">
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="viewEmpName" class="col-form-label">Employee Name</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeName}" type="text" id="viewEmpName" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empId" class="col-form-label">Employee ID</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeId}" type="text" id="modal_empId" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empDOB" class="col-form-label">Employee DOB</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeDOB}" type="date" id="modal_empDOB" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empMail" class="col-form-label">Employee Email</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeMail}" type="email" id="modal_empMail" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empContact" class="col-form-label">Employee Contact </label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeContact}" type="text" id="modal_empContact" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empAddress" class="col-form-label">Employee Address</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employeeAddress}" type="text" id="modal_empAddress" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mb-2 align-items-center">
+                    <div class="col-lg-4">
+                        <label for="modal_empType" class="col-form-label">Employee ID</label>
+                    </div>
+                    <div class="col-lg-7">
+                        <input th:field="*{employmentType}" type="text" id="modal_empType" class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="row g-3 mb-2">
+                <div>
+                    <a th:href="@{/index}" class="btn btn-secondary btn-sm">Go to Home Page</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.min.js}"> </script>
+
+</body>
+</html>
