@@ -1,6 +1,5 @@
 package com.example.employeeManagementApplication_FrontEnd.Service.Impl;
 
-import com.example.employeeManagementApplication_FrontEnd.Dto.ApiResponseDto;
 import com.example.employeeManagementApplication_FrontEnd.Dto.EmployeeDto;
 import com.example.employeeManagementApplication_FrontEnd.Entity.Employee;
 import com.example.employeeManagementApplication_FrontEnd.Exception.EmployeeMailAlreadyExistsException;
@@ -13,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,10 +27,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto createEmployee(EmployeeModel employeeModel) {
 
         EmployeeDto employeeDto = modelMapper.map(employeeModel,EmployeeDto.class);
-        //employeeDto = apiClient.createEmployee(employeeDto);
-//        ApiResponseDto apiResponseDto = new ApiResponseDto();
-//        apiResponseDto.setEmployeeDto(employeeDto);
-
          Optional<Employee> existingemp = employeeRepository.findByEmployeeMail(employeeModel.getEmployeeMail());
          if(existingemp.isPresent()){
              throw new EmployeeMailAlreadyExistsException(employeeModel.getEmployeeMail());
@@ -48,7 +42,6 @@ public class EmployeeServiceImpl implements EmployeeService {
       if(Optionalemp.isEmpty()){
           throw new ResourceNotFoundException(empID);
       }
-
       Optionalemp.get().setEmployeeMail(employeeModel.getEmployeeMail());
       Optionalemp.get().setEmployeeContact(employeeModel.getEmployeeContact());
       Optionalemp.get().setEmployeeName(employeeModel.getEmployeeName());
@@ -62,7 +55,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
-        //List<EmployeeDto> employeeDtoList = employeeService.getAllEmployees();
         List<Employee> employeeList = employeeRepository.findAll();
         List<EmployeeDto> employeeDtoList =  employeeList.stream().map(
                 empDto->modelMapper.map(empDto,EmployeeDto.class)).collect(Collectors.toList()
@@ -72,7 +64,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void deleteEmployee(long empId) {
-       //apiClient.deleteEmployee(empId);
         employeeRepository.deleteById(empId);
        return;
     }

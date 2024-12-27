@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,6 @@
             display: flex;
             flex-direction: column;
         }
-
         thead th {
             position: sticky;
             top: 0;
@@ -27,13 +25,11 @@
             box-shadow: 0px 2px 2px -1px rgba(0, 0, 0, 0.4);
             /* Optional: add shadow for better visibility */
         }
-
         .errTxt {
             font-size: 0.8rem;
             margin: 0px;
             margin-top: 2px;
         }
-
         .toast {
             position: absolute;
             bottom: 5%;
@@ -42,7 +38,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container-fluid d-flex align-items-center bg-dark-subtle p-3 ">
         <div class="card col-12 col-lg-12 col-md-12 col-sm-12  flex-grow-1 shadow-lg mb-1">
@@ -70,7 +65,6 @@
                                 placeholder="Employee Mail..." aria-label="default input example">
                             <p th:errors="*{employeeMail}" class="text-danger errTxt"
                                 th:if="${#fields.hasErrors('employeeMail')}"></p>
-
                             <!-- Display custom error message -->
                             <p class="text-danger errTxt" th:if="${error != null}">
                                 <i th:text="${error}"></i>
@@ -140,9 +134,10 @@
                         <div class="container">
                             <div class="card"></div>
                             <div class="card-header d-flex justify-content-between">
-                            <h4 class="text-start">Employee List</h4>
+                                <h4 class="text-start">Employee List</h4>
                                 <div>
-                                <input type="text" id="searchEmp" role="textbox" placeholder="search.." class="my-1" style="height:30px; border-radius:6px; ">
+                                    <input type="text" id="searchEmp" role="textbox" placeholder="search.." class="my-1"
+                                        style="height:30px; border-radius:6px; ">
                                 </div>
                             </div>
                             <div class="card-body p-0" style="max-height: 330px; overflow-y: auto;">
@@ -180,255 +175,60 @@
                                                         class="btn btn-primary btn-sm">View</a>
                                                     <a th:href="@{'/getUpdatePage/'+${emp.employeeId}}"
                                                         class="btn btn-secondary btn-sm">Update</a>
-
-                                                    <!--                                                <a class="btn btn-secondary btn-sm " data-bs-toggle="modal"-->
-                                                    <!--                                                    data-bs-target="#updateModal">Update</a>-->
                                                     <a th:href="@{'/delEmp/'+${emp.employeeId}}"
                                                         class="btn btn-danger btn-sm">delete</a>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-
-                                    <div th:if="${param.success}" id="successToast" class="toast bg-primary text-white" role="alert"
-                                    aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-body text-center">
-                                        Employee created Successfully.
+                                    <div th:if="${param.success}" id="successToast" class="toast bg-primary text-white"
+                                        role="alert" aria-live="assertive" aria-atomic="true">
+                                        <div class="toast-body text-center">
+                                            Employee created Successfully.
+                                        </div>
                                     </div>
-                                </div>
-                                <div th:if="${param.updated}" id="updateToast" class="toast bg-primary text-white liveToast" role="alert"
-                                    aria-live="assertive" aria-atomic="true">
-                                    <div class="toast-body text-center">
-                                        Employee updated Successfully.
+                                    <div th:if="${param.updated}" id="updateToast"
+                                        class="toast bg-primary text-white liveToast" role="alert" aria-live="assertive"
+                                        aria-atomic="true">
+                                        <div class="toast-body text-center">
+                                            Employee updated Successfully.
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-
-
-
-            <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="viewModalLabel">View Modal</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                            <!--                            &lt;!&ndash; Outside the table &ndash;&gt;-->
-                            <!--                            <div>-->
-                            <!--                                <p>Total employees: <span th:text="${empss.size()}"></span></p>-->
-                            <!--                            </div>-->
-
-                            <!--                            &lt;!&ndash; Accessing specific employee data outside the table &ndash;&gt;-->
-                            <!--                            <div>-->
-                            <!--                                <p>First Employee Name: <span th:text="${emp.employeeId}"></span></p>-->
-                            <!--                            </div>-->
-
-                            <form id="viewForm">
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="viewEmpName" class="col-form-label">Employee Name</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="viewEmpName" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empId" class="col-form-label">Employee ID</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="modal_empId" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empDOB" class="col-form-label">Employee DOB</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="date" id="modal_empDOB" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empMail" class="col-form-label">Employee Email</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="email" id="modal_empMail" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empContact" class="col-form-label">Employee Contact </label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="modal_empContact" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empAddress" class="col-form-label">Employee Address</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="modal_empAddress" class="form-control" readonly>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="modal_empType" class="col-form-label">Employee ID</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input type="text" id="modal_empType" class="form-control" readonly>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="updateModalLabel">Update Employee</h1>
-                            <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="updateFrom" method="post" th:action="@{/employee/update}"
-                                th:object="${employee_model}">
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empName" class="col-form-label">Employee Name</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeName}" type="text" id="Umodal_empName"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empId" class="col-form-label">Employee ID</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeId}" type="number" id="Umodal_empId"
-                                            class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empDOB" class="col-form-label">Employee DOM</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeDOB}" type="date" id="Umodal_empDOB"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empMail" class="col-form-label">Employee Email</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeMail}" type="mail" id="Umodal_empMail"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empGender" class="col-form-label">Employee Gender</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeGender}" type="text" id="Umodal_empGender"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empContact" class="col-form-label">Employee Contact</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeContact}" type="text" id="Umodal_empContact"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empAddress" class="col-form-label">Employee Address</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employeeAddress}" type="text" id="Umodal_empAddress"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row g-3 mb-2 align-items-center">
-                                    <div class="col-lg-4">
-                                        <label for="Umodal_empType" class="col-form-label">Employee Type</label>
-                                    </div>
-                                    <div class="col-lg-7">
-                                        <input th:field="*{employmentType}" type="text" id="Umodal_empType"
-                                            class="form-control">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="reset" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Update Employee</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-           
         </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const successToastTrigger = document.getElementById('successToast');
             const updateToastTrigger = document.getElementById('updateToast');
-
             if (successToastTrigger) {
                 const toast = new bootstrap.Toast(successToastTrigger);
                 toast.show();
             }
-
             if (updateToastTrigger) {
                 const toast = new bootstrap.Toast(updateToastTrigger);
                 toast.show();
             }
-
-           document.getElementById("searchEmp").addEventListener('input',function(){
+            document.getElementById("searchEmp").addEventListener('input', function () {
                 var searchTerm = this.value.toLowerCase();
                 var rows = document.querySelectorAll('#empTable tbody tr');
-
-                rows.forEach(function(row){
+                rows.forEach(function (row) {
                     var rowtext = row.textContent.toLocaleLowerCase();
-
-                    if(rowtext.indexOf(searchTerm) > -1){
-                        row.style.display='';
+                    if (rowtext.indexOf(searchTerm) > -1) {
+                        row.style.display = '';
                     }
-                    else{
-                        row.style.display = 'none'; 
+                    else {
+                        row.style.display = 'none';
                     }
                 })
             })
         });
     </script>
-
     <script th:src="@{/bootstrap/bootstrap-5.3.3-dist/js/bootstrap.js}"></script>
-
 </body>
-
 </html>
